@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+// jshint esversion : 6
+const video = document.querySelector('.flex'); // get the video
+const speed = document.querySelector('.speed'); // whole div containing the speedbar
+const progress = document.querySelector('.speed-bar'); // the progress bar inside speed controller
+
+speed.addEventListener('mousemove', function(e){
+      const y = e.pageY - this.offsetTop;  // from the top of the page to where our mouse cursor is -> e.pageY,
+                                          // this ref to the speedbar div, and offsetTop give us how many px are above it.
+      const percent = y / this.offsetHeight;   // offsetHeight gives us actual height of the div
+
+      const height = Math.round(percent * 100) + '%';
+
+      progress.style.height = height;
+
+      const min = 0.4;
+      const max = 4;
+
+      const playBackRate = percent * (max - min) + min; // percent is 0-1, we convert it to 0.5 to 4 scale
+
+      progress.textContent = playBackRate.toFixed(2) + '%';
+
+      video.playbackRate = playBackRate;
+
+});
+</script>
+</body>
+</html>
